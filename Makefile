@@ -24,7 +24,7 @@ docker:
 
 web:
 	make docker
-	cp -r ../layoutengine-report/* ~/Web/Reports/layoutengine/intro/
+	cp -r ../layoutengine-report/* ~/Web/Reports/HTML/layoutengine/
 
 zip:
 	make docker

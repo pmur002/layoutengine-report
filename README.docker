@@ -1,0 +1,52 @@
+
++ Created docker image with (NOTE ONLY lowercase in image tag) ...
+
+  # Bit of setup to get local copies of in-development pacakges
+  # cp ../../../Browser/DOM_0.6-0.tar.gz .
+  # cp ../../../Fonts/extrafont_0.18.tar.gz .
+  # cp ../../../Fonts/TeX-Gyre/gyre_1.0.tar.gz .
+  # cp ../../../Fonts/Courier/courier_1.0.tar.gz .
+  # cp ../../layoutEngine_0.1-0.tar.gz .
+  # cp ../../layoutEngineCSSBox_0.1-0.tar.gz .
+  # cp ../../layoutEnginePhantomJS_0.1-0.tar.gz .
+  # cp ../../layoutEngineDOM_0.1-0.tar.gz .
+
+  sudo docker build -t pmur002/layoutengine .
+
+  - NOTE that this is probably best run on Uni office machine
+    (e.g., sc-stat-315635.uoa.auckland.ac.nz)
+
+  - NOTE that I had to CREATE /etc/docker/daemon.json containing ...
+
+    { 
+      "dns": [ "130.216.190.1" ]
+    }
+
+    ... and restart the docker server ...
+
+    sudo service docker restart
+
+    ... so that the docker build would use the UoA DNS server
+    (otherwise the build fails at the first apt-get update)
+
+  - ALSO edit /etc/default/docker to store docker files on 
+    larger drive ...
+
+    export DOCKER_TMPDIR="/mnt/storage/docker-tmp"
+    
++ To test image interactively 
+  (which is useful for testing that various things will run and installing
+   packages interactively before adding them to the Dockerfile) ...
+
+   E.G., test that the report will build !!!
+
+  sudo docker run -v $(pwd):/home/work/ -w /home/work --rm -t -i pmur002/layoutengine /bin/bash
+
++ To make image available on DockerHub ...
+
+  sudo docker login
+  sudo docker push pmur002/layoutengine
+
++ Build report with ...
+
+  make docker

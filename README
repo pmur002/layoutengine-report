@@ -1,0 +1,8 @@
+
++ Build using ...
+
+  make docker
+
+  ... so that layoutEngineDOM examples are generated using xvfb within
+  docker container (and do not pollute real desktop with firefox windows
+  and tabs)

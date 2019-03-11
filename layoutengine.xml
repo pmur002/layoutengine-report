@@ -42,10 +42,14 @@
       </span>
     </p>
     <p class="date">
-    Version 1:
+    Version 2:
     <rcode echo="FALSE" results="asis"><![CDATA[
 cat(format(Sys.Date(), "%A %d %B %Y"))
     ]]></rcode>
+  </p>
+    <p class="date versionHistory">
+    Version 1:  original publication<br/>
+    Version 2:  fixed up 'gridExtra' citation
   </p>
     <rcode id="init" echo="FALSE" message="FALSE" results="hide"><![CDATA[
 opts_chunk$set(comment=" ", tidy=FALSE)
@@ -351,7 +355,7 @@ grid.html(htmlDoc)
     Drawing tables of values can be achieved
     directly in R graphics 
     (e.g., using <code>grid.table</code> from the 'gridExtra' package; 
-    <a href="#gridExtra"/>),
+    <a href="#pkg:gridExtra">Auguie, 2017</a>),
     but HTML (combined with CSS) provides many other typesetting 
     features that are not covered by R graphics packages.
     The following code shows an example of the CSS <code>shape-outside</code>
@@ -1661,7 +1665,7 @@ closePage(page)
       contains code for the other transformations and coordinates
       everything.  
       These materials are also available
-      on <a href="https://github.com/pmur002/layoutengine-report/releases/tag/v1">github</a>.
+      on <a href="https://github.com/pmur002/layoutengine-report/releases/tag/v2">github</a>.
     </li>
       <li>
       This report was generated within a 

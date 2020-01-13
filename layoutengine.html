@@ -104,12 +104,13 @@
       </span>
     </p>
     <p class="date">
-    Version 2:
-Sunday 10 March 2019
+    Version 3:
+Monday 13 January 2020
   </p>
     <p class="date versionHistory">
     Version 1:  original publication<br>
     Version 2:  fixed up 'gridExtra' citation
+    Version 3:  update pdf.js code (for displaying PDFs)
   </p>
 
 
@@ -1751,7 +1752,7 @@ https://lists.freedesktop.org/archives/fontconfig/2011-September/003647.html
       contains code for the other transformations and coordinates
       everything.  
       These materials are also available
-      on <a href="https://github.com/pmur002/layoutengine-report/releases/tag/v2">github</a>.
+      on <a href="https://github.com/pmur002/layoutengine-report/releases/tag/v3">github</a>.
     </li>
       <li>
       This report was generated within a 
@@ -2272,22 +2273,25 @@ Williams, G. (2018).
         var canvas = pdfcanvas[i];
         var canvasid = canvas.id;
         console.log("loop " + canvasid);
-        var pdf = await pdfjsLib.getDocument(canvasid + '.pdf');
-        var page = await pdf.getPage(1);
-        console.log("pdf" + canvasid);
-        var scale = canvas.getAttribute("scale");
-        if (!scale) {
-            scale = 100/72;
-        }
-        var viewport = page.getViewport(scale);
-        var context = canvas.getContext('2d');
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
-        var renderContext = {
-            canvasContext: context,
-            viewport: viewport
-        };
-        page.render(renderContext);
+        var loadingTask = pdfjsLib.getDocument(canvasid + '.pdf');
+        loadingTask.promise.then(function(pdf) {
+            pdf.getPage(1).then(function(page) {
+                console.log("pdf" + canvasid);
+                var scale = canvas.getAttribute("scale");
+                if (!scale) {
+                    scale = 100/72;
+                }
+                var viewport = page.getViewport(scale);
+                var context = canvas.getContext('2d');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                var renderContext = {
+                    canvasContext: context,
+                    viewport: viewport
+                };
+                page.render(renderContext);
+            });
+        });
     }
   }
   loadPDFs();

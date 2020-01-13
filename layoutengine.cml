@@ -39,7 +39,7 @@
     <a href="http://orcid.org"><img alt="" src="https://www.stat.auckland.ac.nz/~paul/ORCID/ORCiD.png" style="width: 16px; height: 16px; vertical-align: middle" /></a> <span style="font-family: mono; font-size: small"><a href="http://orcid.org/0000-0002-3224-8858">http://orcid.org/0000-0002-3224-8858</a></span>
   </p>
   <p class="date">
-    Version 2:
+    Version 3:
     <rcode echo="FALSE" results="asis">
 cat(format(Sys.Date(), "%A %d %B %Y"))
     </rcode>
@@ -47,6 +47,7 @@ cat(format(Sys.Date(), "%A %d %B %Y"))
   <p class="date versionHistory">
     Version 1:  original publication<br/>
     Version 2:  fixed up 'gridExtra' citation
+    Version 3:  update pdf.js code (for displaying PDFs)
   </p>
 
   <rcode id="init" echo="FALSE" message="FALSE" results="hide">
@@ -1649,7 +1650,7 @@ closePage(page)
       contains code for the other transformations and coordinates
       everything.  
       These materials are also available
-      on <a href="https://github.com/pmur002/layoutengine-report/releases/tag/v2">github</a>.
+      on <a href="https://github.com/pmur002/layoutengine-report/releases/tag/v3">github</a>.
     </li>
     <li>
       This report was generated within a 
@@ -1820,22 +1821,25 @@ closePage(page)
         var canvas = pdfcanvas[i];
         var canvasid = canvas.id;
         console.log("loop " + canvasid);
-        var pdf = await pdfjsLib.getDocument(canvasid + '.pdf');
-        var page = await pdf.getPage(1);
-        console.log("pdf" + canvasid);
-        var scale = canvas.getAttribute("scale");
-        if (!scale) {
-            scale = 100/72;
-        }
-        var viewport = page.getViewport(scale);
-        var context = canvas.getContext('2d');
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
-        var renderContext = {
-            canvasContext: context,
-            viewport: viewport
-        };
-        page.render(renderContext);
+        var loadingTask = pdfjsLib.getDocument(canvasid + '.pdf');
+        loadingTask.promise.then(function(pdf) {
+            pdf.getPage(1).then(function(page) {
+                console.log("pdf" + canvasid);
+                var scale = canvas.getAttribute("scale");
+                if (!scale) {
+                    scale = 100/72;
+                }
+                var viewport = page.getViewport(scale);
+                var context = canvas.getContext('2d');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                var renderContext = {
+                    canvasContext: context,
+                    viewport: viewport
+                };
+                page.render(renderContext);
+            });
+        });
     }
   }
   loadPDFs();
